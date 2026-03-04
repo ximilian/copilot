@@ -428,7 +428,3 @@ Examples of blockers:
 - **What if I need to change the test plan?** Request revision during Planner's approval gate
 - **How do I know when an agent is done?** They'll present output and ask for approval
 - **Can I skip the Planner?** Only for trivial bug fixes; complex features need test design first
-
----
-
-Last updated: March 4, 2026
