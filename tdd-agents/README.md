@@ -7,50 +7,50 @@ This directory contains AI agents that implement a **test-driven development (TD
 The TDD workflow consists of three sequential agents, each with a distinct role:
 
 ```
-┌─────────────────────────────────────────────────────────────────┐
-│                     User Requests Feature                       │
-└────────────────────────┬────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────────────┐
+│                     User Requests Feature                    │
+└────────────────────────┬─────────────────────────────────────┘
                          │
                          ▼
-┌─────────────────────────────────────────────────────────────────┐
-│  TDD-Architect: Analyze & Plan                                  │
-│  • Read codebase (analysis only)                                │
-│  • Identify affected files and dependencies                     │
-│  • Extract patterns and conventions                             │
-│  • Write findings to scratchpad                                 │
-│  ✅ Output: SCRATCHPAD-[ISSUE_ID].md (Architectural Context)    │
-└────────────────────────┬────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────────────┐
+│  TDD Architect: Analyze & Plan                               │
+│  • Read codebase (analysis only)                             │
+│  • Identify affected files and dependencies                  │
+│  • Extract patterns and conventions                          │
+│  • Write findings to scratchpad                              │
+│  ✅ Output: SCRATCHPAD-[ISSUE_ID].md (Architectural Context) │
+└────────────────────────┬─────────────────────────────────────┘
                          │
                     [User Approves]
                          │
                          ▼
-┌─────────────────────────────────────────────────────────────────┐
-│  TDD-Planner: Design Tests                                      │
-│  • Analyze requirements and acceptance criteria                 │
-│  • Design test cases (before implementation)                    │
-│  • Plan test batches                                            │
-│  • Map criteria to tests                                        │
-│  ✅ Output: SCRATCHPAD-[ISSUE_ID].md (Test Design)              │
-└────────────────────────┬────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────────────┐
+│  TDD Planner: Design Tests                                   │
+│  • Analyze requirements and acceptance criteria              │
+│  • Design test cases (before implementation)                 │
+│  • Plan test batches                                         │
+│  • Map criteria to tests                                     │
+│  ✅ Output: SCRATCHPAD-[ISSUE_ID].md (Test Design)           │
+└────────────────────────┬─────────────────────────────────────┘
                          │
                     [User Approves]
                          │
                          ▼
-┌─────────────────────────────────────────────────────────────────┐
-│  TDD-Implementer: Write Tests & Code                            │
-│  • Write tests FIRST (using test plan)                          │
-│  • Implement minimum code to pass tests (Red-Green)             │
-│  • Refactor for clarity and patterns (Blue/Refactor)            │
-│  • Achieve coverage targets                                     │
-│  ✅ Output: Code changes + PR ready for review                  │
-└────────────────────────┬────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────────────┐
+│  TDD Builder: Write Tests & Code                             │
+│  • Write tests FIRST (using test plan)                       │
+│  • Implement minimum code to pass tests (Red-Green)          │
+│  • Refactor for clarity and patterns (Blue/Refactor)         │
+│  • Achieve coverage targets                                  │
+│  ✅ Output: Code changes + PR ready for review               │
+└────────────────────────┬─────────────────────────────────────┘
                          │
                     [Tests Pass ✓]
                          │
                          ▼
-┌─────────────────────────────────────────────────────────────────┐
-│      Code Review & Merge (Human Review)                         │
-└─────────────────────────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────────────┐
+│      Code Review & Merge (Human Review)                      │
+└──────────────────────────────────────────────────────────────┘
 ```
 
 ## Agent Roles & Responsibilities

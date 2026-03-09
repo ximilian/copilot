@@ -101,7 +101,7 @@ Mocks:
 - `AuditLogger`: Already exists in codebase; no mock needed (we test actual logging)
 
 Database State:
- - `payments` table: Must be empty before each test (Builder will add `t.Cleanup()` to delete test payments)
+- `payments` table: Must be empty before each test (Builder will add `t.Cleanup()` to delete test payments)
 - `audit_events` table: Must be empty before each test
 - Foreign keys: `payments.customer_id` → `customers.id` (create test customer beforehand)
 

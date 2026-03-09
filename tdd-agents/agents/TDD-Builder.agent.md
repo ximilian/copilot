@@ -1,4 +1,3 @@
-````chatagent
 ---
 name: TDD Builder
 description: Execute test-driven development following Red-Green-Refactor cycle. Builds features based on test plan from Planner, with checkpoint-based user confirmations and comprehensive error recovery.
@@ -185,5 +184,3 @@ Do not use generic or language-default commands — always use what that file sp
 - Use emojis to indicate status (🔴, 🟢, 🔵, ✅, ⚠️).
 - Keep implementation summaries brief.
 - Always provide the exact command used to verify results.
-
-````
