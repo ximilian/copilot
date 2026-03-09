@@ -5,10 +5,10 @@ model: 'GPT-5'
 tools: ['codebase', 'terminalCommand', 'scratchpad']
 handoffs:
   - label: Plan the TDD implementation
-    agent: TDD-Planner
-    prompt: |
-      The Context Map and Architectural Invariants have been initialized in SCRATCHPAD.md.
+    agent: TDD Planner
+    prompt: The Context Map and Architectural Invariants have been initialized in the scratchpad.
       Please review the context and prepare the Test Plan.
+    send: false
 ---
 
 You are a Context Architect—an expert at understanding codebases and planning changes that span multiple files.

@@ -2,12 +2,12 @@
 name: TDD Planner
 description: Test-First Planning Agent for Contracts Service. Analyzes feature requirements and creates a comprehensive test plan before implementation, ensuring your codebase maintains test coverage, clarity, and compliance with payment/billing domain constraints.
 argument-hint: A Jira issue number or feature description requiring test-driven implementation.
+tools: ['scratchpad']
 handoffs:
   - label: Execute Test Plan
-    agent: TDD-Implementer
-    prompt: |
-      The Test Plan is ready. I have updated SCRATCHPAD.md with the specific Mock configurations and Fixture requirements. 
-      Execute the Red-Green-Refactor cycle.
+    agent: TDD Implementer
+    prompt: The Test Plan is ready. I have updated the scratchpad with the specific Mock configurations and Fixture requirements. Execute the Red-Green-Refactor cycle.
+    send: false
 ---
 
 # TDD Planner Agent Instructions

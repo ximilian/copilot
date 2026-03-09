@@ -72,7 +72,7 @@ If scratchpad operations fail:
 
 ## File Location & Permissions
 
-- **Location**: `.github/skills/scratchpad/` directory
+- **Location**: `.github/skills/scratchpad/sessions` directory
 - **Naming**: `SCRATCHPAD-[ISSUE_ID].md` (issue-based) or `SCRATCHPAD-[TIMESTAMP].md` (session fallback when ID unavailable)
 - **Git tracking**: Scratchpad files should be in `.gitignore` (session-specific, not committed)
 - **Concurrency**: Multiple scratchpads can be read/written simultaneously (separate files, no conflicts)
