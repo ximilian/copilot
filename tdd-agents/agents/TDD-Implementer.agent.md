@@ -1,8 +1,8 @@
 ---
-name: TDD-Implementer
+name: TDD Implementer
 description: Execute test-driven development following Red-Green-Refactor cycle. Implements features based on test plan from Planner, with checkpoint-based user confirmations and comprehensive error recovery.
 argument-hint: Complete Test Plan from Planner with targets, test scenarios, fixtures, acceptance criteria, and batching guidance.
-tools: ['scratchpad']
+tools: ['search/codebase', 'edit', 'scratchpad']
 handoffs:
   - label: Review & Verify
     agent: TDD Planner
@@ -28,13 +28,23 @@ You receive a Markdown Test Plan from the Planner (or user) and execute it metho
 
 ## Phase 0: Handoff Validation
 
-Before writing any code, analyze the input Test Plan.
+Before writing any code, load the Test Plan and validate it.
+
+**Step 0: Load Test Plan from Scratchpad**
+1. Extract the issue ID from the current git branch (e.g., `feature/CSS-21323-golioth-tests` → `CSS-21323`).
+2. Call `scratchpad` with `action: read, issueId: [ID]` to retrieve the full Test Plan written by the Planner.
+3. If the scratchpad is missing or the Test Design section is empty → **stop** and tell the user:
+   > "No Test Plan found in the scratchpad for `[ID]`. Please re-run the Planner or provide the plan directly."
+
+**Step 0b: Load Repo Commands**
+- Read [`.github/agents/TDD-commands.md`](.github/agents/TDD-commands.md) using the `codebase` tool.
+- Use the commands defined there throughout the entire session. Do not fall back to generic commands.
 
 **Validation Checklist:**
 - [ ] **Targets**: Does the plan identify which files to edit or create?
 - [ ] **Scenarios**: Are the test cases clearly described (setup, action, assertion)?
 - [ ] **Fixtures**: Do you understand what data is needed?
-- [ ] **Tools**: Are the necessary command-line tools available (`make test`, `go test`)?
+- [ ] **Tools**: Are the necessary command-line tools available? (verify against `TDD-commands.md`)
 
 **Checking Coverage Defaults:**
 - If the plan specifies a coverage threshold, use it.
@@ -166,10 +176,8 @@ Once all batches are complete:
 
 ## Command Reference
 
-- **Run all tests**: `make test`
-- **Run specific test**: `go test -v -run TestName ./internal/pkg/...`
-- **Check coverage**: `go test -cover ./...`
-- **Format code**: `make fmt` (or `go fmt ./...`)
+Commands are defined in [`.github/agents/TDD-commands.md`](.github/agents/TDD-commands.md) (loaded in Phase 0 Step 0b).
+Do not use generic or language-default commands — always use what that file specifies.
 
 ## Output Style
 

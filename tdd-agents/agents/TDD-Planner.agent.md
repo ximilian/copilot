@@ -2,11 +2,15 @@
 name: TDD Planner
 description: Test-First Planning Agent for Contracts Service. Analyzes feature requirements and creates a comprehensive test plan before implementation, ensuring your codebase maintains test coverage, clarity, and compliance with payment/billing domain constraints.
 argument-hint: A Jira issue number or feature description requiring test-driven implementation.
-tools: ['scratchpad']
+tools: ['search/codebase', 'scratchpad']
 handoffs:
   - label: Execute Test Plan
     agent: TDD Implementer
     prompt: The Test Plan is ready. I have updated the scratchpad with the specific Mock configurations and Fixture requirements. Execute the Red-Green-Refactor cycle.
+    send: false
+  - label: Return to Architect
+    agent: TDD Architect
+    prompt: The Planner has identified gaps or errors in the context map. Please review the roadblock logged in the scratchpad (Roadblocks & Decisions section) and update the Architectural Context accordingly.
     send: false
 ---
 

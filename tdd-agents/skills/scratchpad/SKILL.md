@@ -1,5 +1,5 @@
 ---
-name: manage_scratchpad
+name: scratchpad
 description: Accesses and updates the SCRATCHPAD.md file to maintain a "source of truth" between the Architect, Planner, and Implementer.
 ---
 
@@ -27,6 +27,25 @@ Each issue gets its own scratchpad file, enabling multiple parallel sessions wit
 2. Parsed from git branch name (e.g., `feature/CSS-21342_stripe-spp` → `CSS-21342`)
 3. Extracted from issue context or environment
 4. Generate timestamped filename `SCRATCHPAD-[YYYYMMDD-HHMMSS].md` if detection fails
+
+## File I/O — How to Write the Scratchpad
+
+This skill provides conventions and schema. The **agent** is responsible for the
+actual file operations using its own available tools:
+
+- **Create or overwrite** a scratchpad file → use the `codebase` tool (file
+  create/write capability).
+- **Read** a scratchpad file → use the `codebase` tool (file read capability).
+- **Append** to a section → read the file first, then rewrite it with the new
+  content appended to the correct section.
+
+If the `codebase` tool is not available in the current session, stop and tell
+the user:
+> "I need file editing capability (`codebase` tool) to write the scratchpad.
+> Please ensure the tool is enabled for this agent session."
+
+Do **not** silently skip scratchpad initialisation or claim the file was written
+without actually creating it.
 
 ## Parameters
 
