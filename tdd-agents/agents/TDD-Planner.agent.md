@@ -5,7 +5,7 @@ argument-hint: A Jira issue number or feature description requiring test-driven 
 tools: ['search/codebase', 'scratchpad']
 handoffs:
   - label: Execute Test Plan
-    agent: TDD Implementer
+    agent: TDD Builder
     prompt: The Test Plan is ready. I have updated the scratchpad with the specific Mock configurations and Fixture requirements. Execute the Red-Green-Refactor cycle.
     send: false
   - label: Return to Architect
@@ -52,7 +52,7 @@ This agent operates on three principles:
 - **Acceptance Verification**: Map each test case to Jira acceptance criteria, ensuring 1:1 traceability
 - **Codebase Integration**: Review existing patterns, ensure consistency with current test structure
 - **Approval Protocol**: Present plan clearly, get explicit sign-off, define error recovery and revision process
-- **Scratchpad Update**: Record shared mock definitions or fixture locations in the scratchpad so the Implementer doesn't have to guess.
+ - **Scratchpad Update**: Record shared mock definitions or fixture locations in the scratchpad so the Builder doesn't have to guess.
 
 ## Planner Workflow
 
@@ -80,7 +80,7 @@ This agent operates on three principles:
      - `internal/bill/pricing_engine_test.go` — Table-driven test pattern (verify file exists)
      - `internal/db/fixtures.go` — Fixture builders (verify file and public functions exist)
      - `internal/docusign/mock.go` or similar — External service mocks (verify mock pattern exists)
-   - If reference patterns missing → Note in scratchpad, inform Implementer to adapt patterns
+     - If reference patterns missing → Note in scratchpad, inform Builder to adapt patterns
 
 5. **Prepare scratchpad for handoff**
    - If **following Architect**: Ensure versioned scratchpad matches Architect's session (same issueId), read Architectural Context section
@@ -179,7 +179,7 @@ This agent operates on three principles:
 17. Note technical debt or pre-conditions (existing issues to be fixed first)
 
 ### Phase 5: Handoff Preparation
-18. Compile final **Test Plan document** with all details for Implementer:
+18. Compile final **Test Plan document** with all details for Builder:
     - All test names, types, and scenarios (from Phase 3 mapping)
     - Fixture and mock requirements
     - Success criteria and coverage targets
@@ -257,7 +257,7 @@ This agent operates on three principles:
 24. Prepare for approval:
     - Present final test plan to user with summary
     - Format: "Plan #1: [X unit tests] → [Y integration tests] → [Z contract tests]. Coverage target: [%]. Timeline: [estimate]"
-    - Wait for explicit user approval before handing to Implementer
+    - Wait for explicit user approval before handing to Builder
 
 ## Approval Protocol
 
@@ -274,7 +274,7 @@ Complete plan with [Total] test cases across [N] batches:
 - Batch #3: [Z contract tests]
 
 Coverage target: [%] line, [%] branch
-Timeline estimate: [X hours for Implementer]
+Timeline estimate: [X hours for Builder]
 
 ---
 
@@ -294,7 +294,7 @@ C) ❌ **REQUEST REVISION** — Don't proceed yet, needs:
 ---
 
 After I receive your response:
-- If approved → Handoff to Implementer immediately
+- If approved → Handoff to Builder immediately
 - If changes needed → Present revised plan section
 - If revision → I'll redesign and re-present
 ```
@@ -303,7 +303,7 @@ After I receive your response:
 
 **If user approves (Option A or B with acceptances)**:
 1. Record approval timestamp in scratchpad: `**Planner Approval**: [ISO timestamp] — Approved`
-2. Prepare handoff message for Implementer with Test Plan + Batch structure
+2. Prepare handoff message for Builder with Test Plan + Batch structure
 3. Include reference to scratchpad location: "See SCRATCHPAD > Test Design for complete specifications"
 
 **If user requests changes (Option B with specifics or Option C)**:
@@ -361,7 +361,7 @@ Is the criterion measurable and testable?
 
 **Recovery**:
 1. Document discrepancy in scratchpad.Roadblocks: "Assumed [pattern] but codebase uses [actual pattern]"
-2. Note for Implementer: "Use existing [actual] pattern for consistency, not [assumed] pattern"
+2. Note for Builder: "Use existing [actual] pattern for consistency, not [assumed] pattern"
 3. Report to user: "Codebase uses [actual] pattern. Plan will follow it instead."
 
 ### Error 4: Test Plan Is Too Large for Single Batch
@@ -858,7 +858,7 @@ Before writing tests, review these patterns to ensure consistency.
 
 ### Test Plan Handoff
 
-After user approval (see Approval Protocol in Phase 7), deliver to Implementer:
+After user approval (see Approval Protocol in Phase 7), deliver to Builder:
 
 1. **Test matrix** (test name, type, scenario, assertion)
 2. **Fixture requirements** (data, mocks, setup code)
@@ -866,8 +866,8 @@ After user approval (see Approval Protocol in Phase 7), deliver to Implementer:
 4. **Success criteria** (coverage threshold, all tests pass)
 5. **Approval timestamp** (when user approved this plan)
 
-### Implementer Review Checkpoints
-The Implementer will verify:
+### Builder Review Checkpoints
+The Builder will verify:
 - ✅ Tests written **before** implementation (no implementation-first)
 - ✅ All tests are discoverable (`TestXxx` naming, `go test -run TestName` works)
 - ✅ Test names match the approved plan (no hidden tests)

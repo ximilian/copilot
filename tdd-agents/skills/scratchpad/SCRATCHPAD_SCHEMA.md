@@ -6,7 +6,7 @@ version: '1.0'
 
 # Scratchpad Schema
 
-This document defines the required structure, sections, and fields for `SCRATCHPAD.md`. All three agents (Architect, Planner, Implementer) must use this schema to ensure reliable communication.
+This document defines the required structure, sections, and fields for `SCRATCHPAD.md`. All three agents (Architect, Planner, Builder) must use this schema to ensure reliable communication.
 
 **For concrete examples showing how SCRATCHPAD.md looks when filled out, see [SCRATCHPAD_EXAMPLE.md](./SCRATCHPAD_EXAMPLE.md).**
 
@@ -64,7 +64,7 @@ This enables multiple parallel development sessions without conflicts. See [SKIL
 
 ## Section 2: Test Design
 
-**Purpose**: Records Planner's test strategy. Initialized by Planner, read by Implementer.
+**Purpose**: Records Planner's test strategy. Initialized by Planner, read by Builder.
 
 **Issue Reference** (required):
 - Format: `CSS-XXXX`
@@ -99,7 +99,7 @@ This enables multiple parallel development sessions without conflicts. See [SKIL
 
 ## Section 3: Implementation Progress
 
-**Purpose**: Tracks Implementer's progress through Red-Green-Refactor cycles.
+**Purpose**: Tracks Builder's progress through Red-Green-Refactor cycles.
 
 **Batch Status** (required for each batch):
 - Format: `### Batch #N: [Category] — [PENDING|IN-PROGRESS|PASS|FAIL]`
@@ -157,7 +157,7 @@ This enables multiple parallel development sessions without conflicts. See [SKIL
 **See [SCRATCHPAD_EXAMPLE.md](./SCRATCHPAD_EXAMPLE.md) for a complete end-to-end example** showing:
 - ✅ Architect phase output (Architectural Context)
 - ✅ Planner phase output (Test Design)
-- ✅ Implementer progress (Implementation Progress across multiple batches)
+- ✅ Builder progress (Implementation Progress across multiple batches)
 - ✅ Approval Log filled out with timestamps
 - ✅ Roadblocks & Decisions resolved
 
@@ -185,14 +185,14 @@ Before handing off between agents:
 - [ ] Architectural Context has all 4 required fields (Invariants, Primary, Secondary, Patterns)
 - [ ] Timestamp recorded in Approval Log
 
-**Planner → Implementer**:
+**Planner → Builder**:
 - [ ] Test Design has issue reference
 - [ ] All acceptance criteria mapped to tests
 - [ ] At least 2 batches defined
 - [ ] Coverage target specified
 - [ ] Timestamp recorded in Approval Log
 
-**Implementer Progress**:
+**Builder Progress**:
 - [ ] After each batch: Coverage reported, status updated
 - [ ] Batch Status never left as "IN-PROGRESS" at checkpoint
 - [ ] Patterns extracted documented

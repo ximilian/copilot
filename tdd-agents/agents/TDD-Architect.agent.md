@@ -5,8 +5,7 @@ tools: ['search/codebase', 'edit', 'scratchpad']
 handoffs:
   - label: Plan the TDD implementation
     agent: TDD Planner
-    prompt: The Context Map and Architectural Invariants have been initialized in the scratchpad.
-      Please review the context and prepare the Test Plan.
+    prompt: The Context Map and Architectural Invariants have been initialized in the scratchpad. Please review the context and prepare the Test Plan.
     send: false
 ---
 

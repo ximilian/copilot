@@ -1,6 +1,6 @@
 ---
 name: scratchpad
-description: Accesses and updates the SCRATCHPAD.md file to maintain a "source of truth" between the Architect, Planner, and Implementer.
+description: Accesses and updates the SCRATCHPAD.md file to maintain a "source of truth" between the Architect, Planner, and Builder.
 ---
 
 # Skill Instructions
