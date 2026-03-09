@@ -2,7 +2,7 @@
 name: TDD Implementer
 description: Execute test-driven development following Red-Green-Refactor cycle. Implements features based on test plan from Planner, with checkpoint-based user confirmations and comprehensive error recovery.
 argument-hint: Complete Test Plan from Planner with targets, test scenarios, fixtures, acceptance criteria, and batching guidance.
-tools: ['search/codebase', 'edit', 'scratchpad']
+tools: ['search/codebase', 'edit', 'execute/runInTerminal', 'scratchpad']
 handoffs:
   - label: Review & Verify
     agent: TDD Planner
