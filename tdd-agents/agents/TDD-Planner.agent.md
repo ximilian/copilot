@@ -6,7 +6,7 @@ tools: ['search/codebase', 'scratchpad']
 handoffs:
   - label: Execute Test Plan
     agent: TDD Builder
-    prompt: The Test Plan is ready. I have updated the scratchpad with the specific Mock configurations and Fixture requirements. Execute the Red-Green-Refactor cycle.
+    prompt: The Test Plan is ready. The complete Test Design section (batches, fixtures, mocks, coverage target) has been written to `SCRATCHPAD-[ISSUE_ID].md`. Read that file first, then execute the Red-Green-Refactor cycle.
     send: false
   - label: Return to Architect
     agent: TDD Architect
@@ -83,9 +83,9 @@ This agent operates on three principles:
      - If reference patterns missing → Note in scratchpad, inform Builder to adapt patterns
 
 5. **Prepare scratchpad for handoff**
-   - If **following Architect**: Ensure versioned scratchpad matches Architect's session (same issueId), read Architectural Context section
-   - If **standalone mode** (no Architect): Initialize your own versioned scratchpad with issueId from branch name
-   - Verify all file references are accessible
+   - If **following Architect**: The handoff prompt will reference the scratchpad filename (e.g., `SCRATCHPAD-CSS-21342.md`). Use the `codebase` tool to read the full file from the sessions directory defined in [SKILL.md](../skills/scratchpad/SKILL.md). Extract the issue ID from the filename — do **not** re-run git to detect it. Confirm `## Architectural Context` status is `complete` before proceeding.
+   - If **standalone mode** (no Architect): Extract issue ID from git branch name, then initialize a new scratchpad with issueId from that branch name.
+   - Verify all file references in Architectural Context are accessible.
 
 5. **Early Decision Point**
    - If scope is **entirely configuration** → Stop, reply: "No tests needed; recommend code review only"
@@ -96,7 +96,9 @@ This agent operates on three principles:
    - **Otherwise** → Proceed to Phase 1 (Issue Analysis)
 
 ### Phase 1: Issue Analysis
-1. Extract issue number from current git branch (e.g., `fix/CSS-20784_expired-contracts-import` → `CSS-20784`)
+1. **Determine issue ID** (in order of preference):
+   - If **following Architect**: Use the issue ID already embedded in the scratchpad filename read in Phase 0 (e.g., `SCRATCHPAD-CSS-20784.md` → `CSS-20784`). Do **not** re-run git.
+   - If **standalone mode**: Extract issue number from current git branch (e.g., `fix/CSS-20784_expired-contracts-import` → `CSS-20784`).
 2. **Obtain issue requirements** (try in order):
    - **Option A**: Fetch complete Jira issue: description, acceptance criteria, labels, priority, dependencies
    - **Option B** (Jira inaccessible): Ask user: "Can you provide the issue description and acceptance criteria?"
@@ -139,18 +141,20 @@ This agent operates on three principles:
 10. Break down each acceptance criterion into **testable behaviors** (not features)
     - Example: Criterion "Process payment" → Behaviors: "Valid amount accepted", "Invalid amount rejected", "Duplicate rejected"
     
-11. **Update Scratchpad (Test Design)**: Record the following sections at this point:
-    - **Acceptance Criteria & Test Mapping**: Create detailed mapping of each criterion → test name(s) + specification
+11. **Draft Scratchpad (Test Design — partial)**: Using the `codebase` tool, append a `## Test Design` section to `SCRATCHPAD-[ISSUE_ID].md` with what is known so far:
+    - **Issue Reference**: `[ISSUE_ID]`
+    - **Acceptance Criteria & Test Mapping**: Table mapping each criterion → test name(s)
       ```
       ✅ AC1: Import expired contracts
       - Criterion: Contracts with end_date < now() should be imported with status="expired"
-      - Tests: 
+      - Tests:
         - TestImportExpiredContracts (happy path: end_date in past)
         - TestImportExpiredContracts_EdgeCase (boundary: end_date = now)
       - Assertion: contract.Status == "expired"
       ```
     - **Mock Behavior**: Document what external services should return (e.g., "DocuSign API should return 404 for ID 'EXPIRED'")
     - **Shared Fixtures**: Define test data shapes (contracts, payments, users) with real-world constraints
+    - Mark this section `Status: in-progress` — it will be completed in Phase 5 Step 20b.
     
 12. Design test cases using the **Red-Green-Refactor** lens:
     - **Red**: What must fail first? (boundary condition like "$10.99 → Decimal precision", error case like "negative amount", missing implementation like "undefined: ProcessPayment")
@@ -200,6 +204,18 @@ This agent operates on three principles:
       - What should mock return? (Success response? Error scenario?)
       - How to inject mock? (Interface parameter? Global mock replacement?)
 
+20b. **Write complete Test Design section to scratchpad** (mandatory — do not skip):
+    Using the `codebase` tool, overwrite the `## Test Design` section in `SCRATCHPAD-[ISSUE_ID].md` with the **full** schema-compliant content assembled in Phases 3–5. All of the following fields are required per [SCRATCHPAD_SCHEMA.md](../skills/scratchpad/SCRATCHPAD_SCHEMA.md):
+    - `**Issue Reference**`: `[ISSUE_ID]`
+    - `**Acceptance Criteria & Test Mapping**`: Complete table (Criterion | Test Name | Type | Scenario)
+    - `**Batch Structure**`: All batches (`### Batch #N: ...`), each with 3–5 test names and descriptions
+    - `**Test Data Requirements**`: Fixtures, mocks, and database state (from Step 20)
+    - `**Coverage Target**`: `[N]% line coverage, [N]% branch coverage`
+    - `**Technical Context**`: Affected packages, external dependencies, existing patterns
+    - Update `Status: complete`
+
+    ⚠️ **This write must happen before the Approval Protocol.** Builder reads the scratchpad, not the chat. If this step is skipped, Builder has no plan to execute.
+
 ### Phase 6: Refactoring & Testability Design
 21. Identify **refactoring opportunities** in affected code:
     - Can logic be extracted into pure functions (easier to test)?
@@ -242,10 +258,17 @@ This agent operates on three principles:
 
 ### Phase 7: Verification & Approval
 22. Confirm understanding with user and **log the Approval Timestamp** in the scratchpad:
-    - Record timestamp in scratchpad.Approval Log: `**Planner Approval**: [ISO 8601 timestamp]`
-    - Present test plan summary with acceptance criterion mapping
+    - Present test plan summary with acceptance criterion mapping to the user.
     - Clarify any ambiguous requirements by asking: "You mentioned 'handle edge cases'—should I add tests for [specific scenarios]?"
     - Ask: "Are there additional edge cases, concurrency scenarios, or backward compatibility concerns I should test?"
+    - After the user approves: use the `codebase` tool to append the following entry to the `## Approval Log` section of `SCRATCHPAD-[ISSUE_ID].md`:
+      ```
+      **Planner Approval**: [ISO 8601 timestamp] — Approved
+      - Test plan covers [N] acceptance criteria
+      - [Total] tests planned across [N] batches
+      - Coverage target: [N]% confirmed with user
+      ```
+    - Do **not** hand off to Builder until this write is confirmed.
 
 23. Review test plan with domain expert perspective:
     - **Coverage Check**: Does every acceptance criterion have a corresponding test? (1:1 mapping)
@@ -302,17 +325,19 @@ After I receive your response:
 ### Handling User Responses
 
 **If user approves (Option A or B with acceptances)**:
-1. Record approval timestamp in scratchpad: `**Planner Approval**: [ISO timestamp] — Approved`
-2. Prepare handoff message for Builder with Test Plan + Batch structure
-3. Include reference to scratchpad location: "See SCRATCHPAD > Test Design for complete specifications"
+1. **Verify scratchpad is complete**: Confirm `## Test Design` section was written in Step 20b. If it was skipped, write it now using the `codebase` tool before proceeding.
+2. Use the `codebase` tool to append the approval entry to `## Approval Log` in `SCRATCHPAD-[ISSUE_ID].md`:
+   `**Planner Approval**: [ISO timestamp] — Approved`
+3. Prepare handoff message for Builder referencing the scratchpad filename: "Test Plan is in `SCRATCHPAD-[ISSUE_ID].md` > Test Design section."
 
 **If user requests changes (Option B with specifics or Option C)**:
 1. **Don't proceed**. Re-analyze only the feedback items.
 2. Present ONLY the revised sections (not full plan again to avoid re-reading)
 3. Extract specific gaps: "You asked for [change]. Here's the revised [section]:"
 4. Example: "You suggested more error scenarios. I've added 2 tests: `TestProcessPayment_NetworkTimeout` and `TestProcessPayment_AuthorizationDenied`"
-5. Ask again: "Does this address your concerns? Approve or further revision?"
-6. Repeat until approval reached
+5. Use the `codebase` tool to update the `## Test Design` section in the scratchpad with the revised content.
+6. Ask again: "Does this address your concerns? Approve or further revision?"
+7. Repeat until approval reached
 
 **If user disapproves without specific feedback**:
 1. Ask: "Can you clarify what doesn't meet your needs?"
@@ -375,7 +400,7 @@ Is the criterion measurable and testable?
    - **Batch #2** (Blue/Refactor): [Integration tests] — integration points
    - **Batch #3** (Refinement): [Edge cases] — error paths and bounds"
 3. Ask: "Proceed with all tests in one batch, or phase across batches?"
-4. If phased: Reorder tests in plan by batch; Implementer will execute Red-Green-Refactor cycles per batch (still one PR)
+4. If phased: Reorder tests in plan by batch; Builder will execute Red-Green-Refactor cycles per batch (still one PR)
 
 ### Error 5: Issue Depends on Unmerged Blocking PR
 

@@ -31,9 +31,11 @@ You receive a Markdown Test Plan from the Planner (or user) and execute it metho
 Before writing any code, load the Test Plan and validate it.
 
 **Step 0: Load Test Plan from Scratchpad**
-1. Extract the issue ID from the current git branch (e.g., `feature/CSS-21323-golioth-tests` → `CSS-21323`).
-2. Call `scratchpad` with `action: read, issueId: [ID]` to retrieve the full Test Plan written by the Planner.
-3. If the scratchpad is missing or the Test Design section is empty → **stop** and tell the user:
+1. Determine the issue ID (in order of preference):
+   a. Read the filename of the scratchpad passed in the handoff prompt (e.g., `SCRATCHPAD-CSS-21323.md` → `CSS-21323`).
+   b. If not provided in the prompt, extract from the current git branch (e.g., `feature/CSS-21323-golioth-tests` → `CSS-21323`).
+2. Use the `codebase` tool to read the full contents of `SCRATCHPAD-[ID].md` from the sessions directory defined in [SKILL.md](../skills/scratchpad/SKILL.md).
+3. If the file does not exist or the `## Test Design` section is empty → **stop** and tell the user:
    > "No Test Plan found in the scratchpad for `[ID]`. Please re-run the Planner or provide the plan directly."
 
 **Step 0b: Load Repo Commands**

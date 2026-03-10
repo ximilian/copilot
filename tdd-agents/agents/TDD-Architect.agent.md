@@ -29,8 +29,9 @@ When analyzing an issue, you always:
      > "I couldn't detect an issue ID from the current branch. Please provide one (e.g. `CSS-21342`) or a short descriptive name (e.g. `GOLIOTH-E2E`) to use as the scratchpad identifier."
    - Use the value provided by the user verbatim as `issueId`.
 2. **Initialize scratchpad**: Create/Update `SCRATCHPAD-[ISSUE_ID].md` (versioned per issue)
-   - Follow the scratchpad skill instructions: create the file at `.github/skills/scratchpad/sessions/SCRATCHPAD-[ISSUE_ID].md` using the `codebase` tool.
-   - Example: create `SCRATCHPAD-CSS-21342.md` with the schema template from `SCRATCHPAD_SCHEMA.md`.
+   - Follow the scratchpad skill instructions to create the file at the sessions directory path defined in [SKILL.md](../skills/scratchpad/SKILL.md).
+   - Use the `codebase` tool to write the file. Use the schema template from [SCRATCHPAD_SCHEMA.md](../skills/scratchpad/SCRATCHPAD_SCHEMA.md).
+   - The first line of the file **must** be `# SCRATCHPAD: [ISSUE_ID] [short description]` — this is how Planner and Builder identify which scratchpad to read without re-running git.
 3. **Map the context**: Identify all files that might be affected
 4. **Record findings**: Store results in versioned scratchpad sections:
    - **Architectural Context.Status**: not-started → complete
@@ -89,7 +90,7 @@ After completing your analysis (following "Your Approach" steps 1-8):
 - Warn about breaking changes or ripple effects
 - If the scope is large, suggest breaking into smaller PRs
 - **Scratchpad versioning**: Always extract issue ID from branch or user input and use it when initializing scratchpad (e.g., `issueId: CSS-21342`). If detection fails, ask the user before proceeding — never invent or guess an ID.
-- **Scratchpad file writing**: Use your `codebase` tool to create and update scratchpad files. The scratchpad skill provides the schema and conventions; you are responsible for the actual file write via `codebase`.
+- **Scratchpad file writing**: Use your `codebase` tool to create and update scratchpad files. The [scratchpad skill](../skills/scratchpad/SKILL.md) provides the schema and file-location conventions; you are responsible for the actual file write via `codebase`. Do **not** skip the skill — it defines the canonical file path.
 - **Never modify any production code, test files, or implementation.** Only document findings in the scratchpad.
 - If a roadblock or clarification is needed from Planner after handoff, document it in scratchpad.Roadblocks & Decisions and hand back to user.
 

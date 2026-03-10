@@ -35,6 +35,11 @@ This enables multiple parallel development sessions without conflicts. See [SKIL
 ## Section 1: Architectural Context
 
 **Purpose**: Records Architect's analysis. Initialized by Architect, read by Planner.
+**Written by**: Architect (during codebase analysis, before handoff to Planner)
+**Read by**: Planner (Phase 0 Step 5 — first action after receiving Architect handoff)
+
+> **Architect**: Create this section when you initialize the scratchpad. Set `Status: not-started`, fill all required fields, then update `Status: complete` before handing off.
+> **Planner**: Before doing any analysis, read this section in full. Do not re-search the codebase for anything already listed here.
 
 **Status Field** (required):
 - `not-started` | `in-progress` | `complete`
@@ -65,6 +70,11 @@ This enables multiple parallel development sessions without conflicts. See [SKIL
 ## Section 2: Test Design
 
 **Purpose**: Records Planner's test strategy. Initialized by Planner, read by Builder.
+**Written by**: Planner (Phase 3 Step 11 — during test planning, before handoff to Builder)
+**Read by**: Builder (Phase 0 Step 0 — first action before writing any code)
+
+> **Planner**: Append this section to the existing scratchpad (do not overwrite Architectural Context). All fields are required before handing off to Builder.
+> **Builder**: Read this section in full before writing a single line of code. The batch structure here defines your execution order.
 
 **Issue Reference** (required):
 - Format: `CSS-XXXX`
@@ -100,6 +110,10 @@ This enables multiple parallel development sessions without conflicts. See [SKIL
 ## Section 3: Implementation Progress
 
 **Purpose**: Tracks Builder's progress through Red-Green-Refactor cycles.
+**Written by**: Builder (updated after every Red-Green-Refactor batch)
+**Read by**: Planner (during Review & Verify handoff to confirm completeness against the Test Design)
+
+> **Builder**: Update this section after completing each batch checkpoint. Never leave a batch status as `IN-PROGRESS` when pausing for user confirmation.
 
 **Batch Status** (required for each batch):
 - Format: `### Batch #N: [Category] — [PENDING|IN-PROGRESS|PASS|FAIL]`
@@ -120,6 +134,13 @@ This enables multiple parallel development sessions without conflicts. See [SKIL
 ## Section 4: Approval Log
 
 **Purpose**: Records decision points and approvals at each stage.
+**Written by**: All agents (each records their own approval entry)
+**Read by**: All agents (verify prior stage was approved before proceeding)
+
+> **Architect**: Record `Architect Approval` entry after user confirms the context map.
+> **Planner**: Record `Planner Approval` entry after user approves the test plan.
+> **Builder**: Record `User Checkpoint #N` entries after each batch confirmation.
+> Any agent receiving a handoff should check that the previous agent's approval entry exists before starting work.
 
 **Architect Approval** (required after Architect completes):
 - Format: `**Architect Approval**: [Timestamp ISO 8601] — [Status: Approved|Approved with notes|Pending user input]`
@@ -139,6 +160,10 @@ This enables multiple parallel development sessions without conflicts. See [SKIL
 ## Section 5: Roadblocks & Decisions
 
 **Purpose**: Tracks architectural conflicts, design decisions, and unblocked items.
+**Written by**: Any agent that encounters a blocker or makes a significant architectural decision
+**Read by**: Any agent picking up the session or receiving a roadblock handoff
+
+> When any agent logs a roadblock here, it must immediately stop and surface it to the user. The receiving agent (e.g., Planner receiving a Builder roadblock) must read this section before proposing a resolution.
 
 **Active Roadblocks** (only present if exists):
 - Format: Describe each blocking issue with test name, technical conflict, attempted solutions, and what's needed to unblock
