@@ -2,7 +2,7 @@
 name: TDD Builder
 description: Execute test-driven development following Red-Green-Refactor cycle. Builds features based on test plan from Planner, with checkpoint-based user confirmations and comprehensive error recovery.
 argument-hint: Complete Test Plan from Planner with targets, test scenarios, fixtures, acceptance criteria, and batching guidance.
-tools: ['search/codebase', 'edit', 'execute/runInTerminal', 'scratchpad']
+tools: ['search/codebase', 'edit/createFile', 'edit', 'execute/runInTerminal', 'scratchpad']
 handoffs:
   - label: Review & Verify
     agent: TDD Planner
@@ -39,7 +39,7 @@ Before writing any code, load the Test Plan and validate it.
    > "No Test Plan found in the scratchpad for `[ID]`. Please re-run the Planner or provide the plan directly."
 
 **Step 0b: Load Repo Commands**
-- Read [`.github/agents/TDD-commands.md`](.github/agents/TDD-commands.md) using the `codebase` tool.
+- Read [`./TDD-commands.md`](./TDD-commands.md) using the `codebase` tool.
 - Use the commands defined there throughout the entire session. Do not fall back to generic commands.
 
 **Validation Checklist:**
@@ -178,7 +178,7 @@ Once all batches are complete:
 
 ## Command Reference
 
-Commands are defined in [`.github/agents/TDD-commands.md`](.github/agents/TDD-commands.md) (loaded in Phase 0 Step 0b).
+Commands are defined in [`./TDD-commands.md`](./TDD-commands.md) (loaded in Phase 0 Step 0b).
 Do not use generic or language-default commands — always use what that file specifies.
 
 ## Output Style

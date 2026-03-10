@@ -2,7 +2,7 @@
 name: TDD Planner
 description: Test-First Planning Agent for Contracts Service. Analyzes feature requirements and creates a comprehensive test plan before implementation, ensuring your codebase maintains test coverage, clarity, and compliance with payment/billing domain constraints.
 argument-hint: A Jira issue number or feature description requiring test-driven implementation.
-tools: ['search/codebase', 'scratchpad']
+tools: ['search/codebase', 'edit', 'scratchpad']
 handoffs:
   - label: Execute Test Plan
     agent: TDD Builder
