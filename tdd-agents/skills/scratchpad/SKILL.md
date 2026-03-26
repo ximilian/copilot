@@ -14,6 +14,22 @@ All agents **MUST** follow the schema defined in [SCRATCHPAD_SCHEMA.md](./SCRATC
 - Field validation rules
 - Handoff requirements between agents
 
+## File Location
+
+All scratchpad files live inside the repository at:
+
+```
+.github/sessions/SCRATCHPAD-[ISSUE_ID].md
+```
+
+- Directory: `.github/sessions/` (relative to the repository root)
+- The directory must be created if it does not already exist
+- Full example: `.github/sessions/SCRATCHPAD-CSS-21342.md`
+
+> **Critical**: Never write the scratchpad to `/memories/`, a temp dir, or any
+> path outside the repository. The file must be committed alongside the work so
+> that Planner and Builder can read it in any future session.
+
 ## Versioning & Parallel Sessions
 
 Each issue gets its own scratchpad file, enabling multiple parallel sessions without conflicts.
@@ -88,10 +104,3 @@ If scratchpad operations fail:
 3. **Validation failures**: Report specific errors and required fixes before proceeding
 4. **Handoff validation**: If previous agent's sections are missing, return error with specific guidance
 5. **File not found**: If scratchpad doesn't exist and not in `initialize` action, return error with filename
-
-## File Location & Permissions
-
-- **Location**: `.github/skills/scratchpad/sessions` directory
-- **Naming**: `SCRATCHPAD-[ISSUE_ID].md` (issue-based) or `SCRATCHPAD-[TIMESTAMP].md` (session fallback when ID unavailable)
-- **Git tracking**: Scratchpad files should be in `.gitignore` (session-specific, not committed)
-- **Concurrency**: Multiple scratchpads can be read/written simultaneously (separate files, no conflicts)

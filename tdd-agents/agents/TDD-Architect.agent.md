@@ -1,7 +1,7 @@
 ---
 name: 'TDD Architect'
 description: 'An agent that helps plan and execute multi-file changes by identifying relevant context and dependencies'
-tools: ['search/codebase', 'edit', 'scratchpad']
+tools: ['search/codebase', 'read', 'edit', 'scratchpad']
 handoffs:
   - label: Plan the TDD implementation
     agent: TDD Planner
