@@ -10,3 +10,9 @@ This repository is organized by dedicated workflows:
   - Three specialized agents that collaborate to implement features following TDD principles
   - Shared scratchpad communication system for agent handoffs
   - See [tdd-agents/README.md](tdd-agents/README.md) for complete documentation
+
+## Installation
+
+The repository contains Markdown-based agent and skill definitions; there is no
+build step. To use or customize the agents and skills, copy/symlink the
+specific files into your customization directory.
